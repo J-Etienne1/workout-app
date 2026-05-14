@@ -136,6 +136,17 @@ img {
 
 /* ---- Warmup ---- */
 
+.wake-lock-notice {
+  margin: 12px 0 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(226, 88, 88, 0.12);
+  border: 1px solid rgba(226, 88, 88, 0.25);
+  color: #f0d6d6;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .warmup {
   margin: 14px 0 8px;
   padding: 12px 14px;

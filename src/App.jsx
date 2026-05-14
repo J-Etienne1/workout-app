@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { workouts } from "./data/workouts.js";
 import { useWorkoutState } from "./hooks/useWorkoutState.js";
 import { useRestTimer } from "./hooks/useRestTimer.js";
@@ -19,6 +19,9 @@ export default function App() {
   const [activeDay, setActiveDay] = useState(todayDefaultDay);
   const [warmupOpen, setWarmupOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
+  const [wakeLockSupported, setWakeLockSupported] = useState(true);
+  const [wakeLockError, setWakeLockError] = useState("");
+  const wakeLockRef = useRef(null);
   const { state, updateExercise, resetExercise } = useWorkoutState();
   const restTimer = useRestTimer();
   const day = workouts[activeDay];
@@ -26,6 +29,54 @@ export default function App() {
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [activeDay]);
+
+  useEffect(() => {
+    const supportsWakeLock = "wakeLock" in navigator;
+    setWakeLockSupported(supportsWakeLock);
+
+    if (!supportsWakeLock) {
+      return undefined;
+    }
+
+    let isMounted = true;
+
+    const requestWakeLock = async () => {
+      try {
+        const lock = await navigator.wakeLock.request("screen");
+        if (!isMounted) return;
+
+        wakeLockRef.current = lock;
+        setWakeLockError("");
+
+        lock.addEventListener("release", () => {
+          setWakeLockError("");
+          wakeLockRef.current = null;
+        });
+      } catch (error) {
+        if (!isMounted) return;
+        setWakeLockError(error?.message ?? "Failed to acquire wake lock");
+        console.error("Wake lock error:", error);
+      }
+    };
+
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === "visible" && !wakeLockRef.current) {
+        await requestWakeLock();
+      }
+    };
+
+    requestWakeLock();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      isMounted = false;
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      if (wakeLockRef.current) {
+        wakeLockRef.current.release().catch(() => {});
+        wakeLockRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <div className="app">
@@ -54,6 +105,13 @@ export default function App() {
           <span className="warmup__label">Warmup</span>
           <span className="warmup__chev">{warmupOpen ? "▾" : "▸"}</span>
         </button>
+        {(!wakeLockSupported || wakeLockError) && (
+          <div className="wake-lock-notice" role="status" aria-live="polite">
+            {!wakeLockSupported
+              ? "Screen wake lock is not supported on this browser. The screen may dim or turn off automatically."
+              : `Unable to keep the screen awake: ${wakeLockError}`}
+          </div>
+        )}
         {warmupOpen && <p className="warmup__body">{day.warmup}</p>}
 
         <ol className="cards">
