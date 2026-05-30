@@ -3,3 +3,6 @@ dist
 .DS_Store
 .vite
 *.local
+cypress/videos
+cypress/screenshots
+cypress/downloads

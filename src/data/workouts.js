@@ -1,7 +1,7 @@
 export const workouts = {
   saturday: {
     id: "saturday",
-    name: "Saturday",
+    name: "Day 1",
     focus: "Upper Body + Core",
     warmup:
       "5 min light cardio + arm circles, band pull-aparts, scapular pull-ups (10 each)",
@@ -88,13 +88,13 @@ export const workouts = {
       },
       {
         id: "sat-9",
-        name: "Cable Crunches",
+        name: "Standing Cable Crunches",
         sets: 3,
         repsTarget: "15",
         repsType: "count",
         defaults: { weight: 13.5, currentReps: 15 },
-        notes: "Crunch through the abs, not the hips",
-        image: "sat-09-cable-crunches.png",
+        notes: "Stand tall, crunch through the abs — don't pull with the arms or hips",
+        image: "sat-09-standing-cable-crunches.png",
       },
       {
         id: "sat-10",
@@ -110,7 +110,7 @@ export const workouts = {
   },
   wednesday: {
     id: "wednesday",
-    name: "Wednesday",
+    name: "Day 2",
     focus: "Lower Body + Core + Conditioning",
     warmup:
       "5 min cardio + bodyweight squats, glute bridges, leg swings (10 each)",
@@ -208,7 +208,7 @@ export const workouts = {
 export const programInfo = {
   goal: "Lean, defined physique — moderate weight, controlled tempo.",
   schedule:
-    "2 days/week — Saturday: Upper + Core | Wednesday: Lower + Core + Conditioning",
+    "2 days/week — Day 1: Upper + Core | Day 2: Lower + Core + Conditioning",
   tempo: "2s down, 1s up. No bouncing, no momentum.",
   rest: "60–75s between sets.",
   progression:

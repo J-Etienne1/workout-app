@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const DEFAULT_REST = 60;
+export const REST_PRESETS = [60, 75, 90];
 
 export function useRestTimer() {
   const [endsAt, setEndsAt] = useState(null);
   const [duration, setDuration] = useState(DEFAULT_REST);
+  // The rest length to use when a set is completed — remembered between sets.
+  const [preferred, setPreferred] = useState(DEFAULT_REST);
   const [now, setNow] = useState(() => Date.now());
   const firedRef = useRef(false);
 
@@ -24,8 +27,21 @@ export function useRestTimer() {
     }
   }, [remainingMs, endsAt]);
 
-  const start = useCallback((seconds = DEFAULT_REST) => {
+  const start = useCallback(
+    (seconds) => {
+      const secs = seconds ?? preferred;
+      firedRef.current = false;
+      setDuration(secs);
+      setEndsAt(Date.now() + secs * 1000);
+    },
+    [preferred]
+  );
+
+  // Pick a rest length: restart the running countdown at it and remember it
+  // as the default for subsequent sets.
+  const choosePreset = useCallback((seconds) => {
     firedRef.current = false;
+    setPreferred(seconds);
     setDuration(seconds);
     setEndsAt(Date.now() + seconds * 1000);
   }, []);
@@ -43,5 +59,5 @@ export function useRestTimer() {
   const secondsLeft =
     remainingMs === null ? null : Math.max(0, Math.ceil(remainingMs / 1000));
 
-  return { secondsLeft, duration, start, skip, reset };
+  return { secondsLeft, duration, start, skip, reset, choosePreset };
 }

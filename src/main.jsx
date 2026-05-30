@@ -8,3 +8,15 @@ createRoot(document.getElementById("root")).render(
     <App />
   </StrictMode>,
 );
+
+// Register the service worker for offline support + installability.
+// Production only, so it never interferes with the dev server.
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(`${import.meta.env.BASE_URL}sw.js`)
+      .catch(() => {
+        // Registration failures shouldn't break the app — ignore.
+      });
+  });
+}

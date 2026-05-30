@@ -8,15 +8,10 @@ import { FinisherCard } from "./components/FinisherCard.jsx";
 import { InfoPanel } from "./components/InfoPanel.jsx";
 import { RestTimer } from "./components/RestTimer.jsx";
 
-function todayDefaultDay() {
-  const dow = new Date().getDay();
-  if (dow === 3) return "wednesday";
-  if (dow === 6) return "saturday";
-  return "saturday";
-}
+const firstDay = Object.keys(workouts)[0];
 
 export default function App() {
-  const [activeDay, setActiveDay] = useState(todayDefaultDay);
+  const [activeDay, setActiveDay] = useState(firstDay);
   const [warmupOpen, setWarmupOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [wakeLockSupported, setWakeLockSupported] = useState(true);
@@ -146,6 +141,7 @@ export default function App() {
         duration={restTimer.duration}
         onReset={restTimer.reset}
         onSkip={restTimer.skip}
+        onChoosePreset={restTimer.choosePreset}
       />
     </div>
   );

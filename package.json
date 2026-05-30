@@ -6,14 +6,27 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start:e2e": "vite --port 5173 --strictPort",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "e2e": "start-server-and-test start:e2e http://localhost:5173/workout-app/ cy:run"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^5.4.10"
+    "cypress": "^15.16.0",
+    "jsdom": "^29.1.1",
+    "start-server-and-test": "^2.1.5",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.9"
   }
 }
