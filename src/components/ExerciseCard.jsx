@@ -14,16 +14,14 @@ export function ExerciseCard({
   onSetCompleted,
 }) {
   const [imageOpen, setImageOpen] = useState(false);
-  const [setsDone, setSetsDone] = useState(0);
+  const setsDone = state.setsDone ?? 0;
   const showWeight = exercise.defaults.weight !== null;
   const imgSrc = `${BASE}images/${exercise.image}`;
 
   const toggleSet = (i) => {
-    setSetsDone((current) => {
-      const next = current === i + 1 ? i : i + 1;
-      if (next > current) onSetCompleted?.();
-      return next;
-    });
+    const next = setsDone === i + 1 ? i : i + 1;
+    if (next > setsDone) onSetCompleted?.();
+    onUpdate(exercise.id, { setsDone: next });
   };
 
   return (
@@ -35,7 +33,13 @@ export function ExerciseCard({
           onClick={() => setImageOpen(true)}
           aria-label={`View reference image for ${exercise.name}`}
         >
-          <img src={imgSrc} alt={exercise.name} loading="lazy" />
+          <img
+            src={imgSrc}
+            alt={exercise.name}
+            width="88"
+            height="88"
+            loading="lazy"
+          />
         </button>
         <div className="card__title">
           <span className="card__index">#{index}</span>
@@ -79,10 +83,7 @@ export function ExerciseCard({
       <button
         type="button"
         className="card__reset"
-        onClick={() => {
-          onReset(exercise.id);
-          setSetsDone(0);
-        }}
+        onClick={() => onReset(exercise.id)}
       >
         Reset to defaults
       </button>
