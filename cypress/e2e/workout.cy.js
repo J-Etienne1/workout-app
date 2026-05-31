@@ -24,7 +24,9 @@ describe("Workout app", () => {
         cy.get(".editor__value").first().should("contain", "10");
       });
 
-    // The value is saved to localStorage and survives a full reload.
+    // The value is saved to localStorage (debounced) and survives a full reload.
+    // Wait briefly to allow the app's debounced write to complete before reload.
+    cy.wait(300);
     cy.reload();
     cy.get(".card").first().find(".editor__value").first().should("contain", "10");
   });
@@ -60,6 +62,8 @@ describe("Workout app", () => {
         cy.get('[aria-label="Increase weight by 2.5 kg"]').click();
       });
 
+    // Allow the debounced save to complete before reloading the page.
+    cy.wait(300);
     cy.reload();
 
     cy.get(".card")
