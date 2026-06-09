@@ -1,6 +1,10 @@
 # Workout
 
-Personal mobile-first 2-day workout tracker — **Day 1** (upper) and **Day 2** (lower), which you can train on whatever days of the week suit you. Editable weights and reps persist between sessions.
+Personal mobile-first 2-day workout tracker — **Day 1** (upper) and **Day 2** (lower), which you can train on whatever days of the week suit you.
+<br>
+Editable weights and reps persist between sessions.
+<br> 
+This app is also a Progressive Web App (PWA) so it can be installed to your home screen and work offline.
 
 ## Run locally
 
