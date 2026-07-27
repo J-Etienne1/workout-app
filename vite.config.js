@@ -9,6 +9,6 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: "./src/test/setup.js",
-    exclude: ["**/._*", "**/node_modules/**", "**/dist/**", "**/react-blog/**"],
+    exclude: ["**/._*", "node_modules"],
   },
 });
